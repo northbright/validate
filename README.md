@@ -8,11 +8,12 @@ Package validate provides functions to validate phone number, username and passw
 
 #### Username validation
   * Chinese Characters supported.
-      Each Chinese character's length is recognized as 2.
-      Because the font width of Chinese character is 2x than Latin(number) in most case.
-      e.g.
-      "中文汉字" -> 4 Chinese Characters: display width = 8
-      "abcd1234" -> 8 Latin chars and numbers mixed: display width = 8.5      
+  
+        Each Chinese character's length is recognized as 2.
+        Because the font width of Chinese character is 2x than Latin(number) in most case.
+        e.g.
+        "中文汉字" -> 4 Chinese Characters: display width = 8
+        "abcd1234" -> 8 Latin chars and numbers mixed: display width = 8.5      
   * Min / Max length. Default: 6 - 16.
   * If can have numbers. Default: true.
   * If can have hyphens(`-`). Default: true.
@@ -40,11 +41,12 @@ validate包提供了适用于中国用户的函数用于验证手机号码，用
 
 #### 用户名验证
   * 支持中文作为用户名。
-      每个中文字符的长度将被计算成2。
-      因为在通常情况下，中文字符的字体的显示宽度是拉丁字母（数字)的2倍。
-      例如：
-      "中文汉字" -> 4个中文字符:显示宽度 ＝ 8
-      "abcd1234" -> 8个拉丁字母和数字组合: 显示宽度 = 8.5
+      
+          每个中文字符的长度将被计算成2。
+          因为在通常情况下，中文字符的字体的显示宽度是拉丁字母（数字)的2倍。
+          例如：
+          "中文汉字" -> 4个中文字符:显示宽度 ＝ 8
+          "abcd1234" -> 8个拉丁字母和数字组合: 显示宽度 = 8.5
   * 最短 ／ 最长长度。默认: 6 - 16。
   * 是否可以包含数字。默认: 是。
   * 是否可以包含连接符(`-`)。默认: 是。
