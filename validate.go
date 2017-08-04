@@ -82,6 +82,12 @@ func ValidPhoneNum(number string) bool {
 // Return:
 //    true for valid or false for invalid.
 // Comments:
+//     Username can contain Latin letters and Chinese characters.
+//         Each Chinese character's length is recognized as 2.
+//         Because the font width of Chinese character is 2x than Latin(number) in most case.
+//         e.g.
+//         "中文汉字" -> 4 Chinese Characters: display width = 8
+//         "abcd1234" -> 8 Latin chars and numbers mixed: display width = 8.5
 //    Username validation can be configured by following variables:
 //    UsernameMinLen(default: 6)
 //    UsernameMaxLen(default: 64)
