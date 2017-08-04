@@ -6,21 +6,21 @@ import (
 	"github.com/northbright/validate"
 )
 
-func ExampleValidPhoneNum() {
-	log.Printf("---------- ValidPhoneNum() Test Begin -------------")
+func ExampleValidMobilePhoneNum() {
+	log.Printf("---------- ValidMobilePhoneNum() Test Begin -------------")
 
-	phoneNums := []string{
+	nums := []string{
 		"aaabc89232",
 		"10000",
 		"13800138000",
 	}
 
-	for _, v := range phoneNums {
-		valid := validate.ValidPhoneNum(v)
+	for _, v := range nums {
+		valid := validate.ValidMobilePhoneNum(v)
 		log.Printf("%v: %v", v, valid)
 	}
 
-	log.Printf("---------- ValidPhoneNum() Test End -------------")
+	log.Printf("---------- ValidMobilePhoneNum() Test End -------------")
 	// Output:
 }
 

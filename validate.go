@@ -63,11 +63,11 @@ var (
 	ErrPasswordAtLeastOneSpecial = fmt.Errorf("password should have at least one special character")
 )
 
-// ValidPhoneNum validates the phone number.
+// ValidMobilePhoneNum validates the mobile phone number.
 //
 // Return:
 //     true for valid or false for invalid.
-func ValidPhoneNum(number string) bool {
+func ValidMobilePhoneNum(number string) bool {
 	p := `^\d{11}$`
 	r := regexp.MustCompile(p)
 
