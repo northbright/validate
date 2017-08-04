@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/northbright/validate)](https://goreportcard.com/report/github.com/northbright/validate)
 [![GoDoc](https://godoc.org/github.com/northbright/validate?status.svg)](https://godoc.org/github.com/northbright/validate)
 
-Package validate provides functions to validate phone number, username and password for Chinese users.
+Package validate provides functions to validate mobile phone number, username and password for Chinese users.
 
 #### Username validation
   * Chinese Characters supported.
