@@ -25,20 +25,24 @@ func ExampleValidUsername() {
 
 	// Default Username Validation Configuration.
 	log.Printf("Test 1: Default Username Validation Configuration:")
+	log.Printf("username len: 6 - 64, no dot: false, no hyphen: false, no underscore: false.")
 
 	for _, v := range usernames {
-		log.Printf("%v: %v", v, validate.ValidUsername(v))
+		log.Printf("%v(len: %v): %v", v, len(v), validate.ValidUsername(v))
 	}
 	log.Printf("Test 1: Done")
 
 	// Customized Username Validation Configuration.
 	log.Printf("Test 2: Customized Username Validation Configuration:")
+	log.Printf("username len: 8 - 64, no dot: true, no hyphen: true, no underscore: true.")
 
 	for _, v := range usernames {
-		log.Printf("%v: %v",
+		log.Printf("%v(len: %v): %v",
 			v,
+			len(v),
 			validate.ValidUsername(v,
-				validate.UsernameMinLen(5),
+				validate.UsernameMinLen(8),
+				validate.UsernameNoDot(true),
 				validate.UsernameNoHyphen(true),
 				validate.UsernameNoUnderscore(true),
 			),

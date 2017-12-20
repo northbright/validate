@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"unicode"
 )
 
 // UsernameOption specifies an option for username validation.
@@ -16,6 +15,7 @@ type UsernameOption struct {
 type usernameOptions struct {
 	minLen       int
 	maxLen       int
+	noDot        bool
 	noHyphen     bool
 	noUnderscore bool
 }
@@ -34,6 +34,13 @@ func UsernameMaxLen(l int) UsernameOption {
 	}}
 }
 
+// UsernameNoDot specifies if username can have dots.
+func UsernameNoDot(flag bool) UsernameOption {
+	return UsernameOption{func(op *usernameOptions) {
+		op.noDot = flag
+	}}
+}
+
 // UsernameNoHyphen specifies if username can have hyphens.
 func UsernameNoHyphen(flag bool) UsernameOption {
 	return UsernameOption{func(op *usernameOptions) {
@@ -49,24 +56,20 @@ func UsernameNoUnderscore(flag bool) UsernameOption {
 }
 
 // ValidUsername validates the username.
+// Username can contain unicode letters, latin letters and digits.
 //
 // Params:
 //     username: username to validate.
 //     options: users can specifiy options by following functions:
-//              UsernameMinLen(): min len. Default: 6.
-//              UsernameMaxLen(): max len. Default: 64.
+//              UsernameMinLen(): min length of username. Default: 6.
+//                  The length of username is the number of bytes in the string(UTF-8 encoded).
+//                  e.g. len("世界") = 6, len("world") = 5.
+//              UsernameMaxLen(): max length of username. Default: 64.
 //              UsernameNoNum(): no number in username. Default: false.
 //              UsernameNoHyphen(): no hyphen in username. Default: false.
 //              UsernameNoUnderscore(): no underscore in username. Default: false.
 // Return:
 //     true for valid or false for invalid.
-// Comments:
-//     Username can contain Latin letters, digits and Chinese characters.
-//     Each Chinese character's length is recognized as 2.
-//     Because the font width of Chinese character is 2x than Latin(number) in most case.
-//     e.g.
-//     "中文汉字" -> 4 Chinese Characters: display width = 8
-//     "abcd1234" -> 8 Latin chars and numbers mixed: display width = 8.5
 func ValidUsername(username string, options ...UsernameOption) bool {
 	// Intialize default options.
 	op := usernameOptions{
@@ -79,7 +82,11 @@ func ValidUsername(username string, options ...UsernameOption) bool {
 		option.f(&op)
 	}
 
-	p := fmt.Sprintf(`^(?:\p{Han}|[a-zA-Z]|\d)+$`)
+	p := fmt.Sprintf(`^(?:\p{L}|[a-zA-Z]|\d)+$`)
+
+	if !op.noDot {
+		p = strings.Replace(p, `)`, `|\.)`, 1)
+	}
 
 	if !op.noHyphen {
 		p = strings.Replace(p, `)`, `|-)`, 1)
@@ -94,16 +101,7 @@ func ValidUsername(username string, options ...UsernameOption) bool {
 		return false
 	}
 
-	l := 0
-	for _, r := range username {
-		switch {
-		case unicode.Is(unicode.Scripts["Han"], r):
-			l += 2
-		default:
-			l++
-		}
-	}
-
+	l := len(username)
 	if l < op.minLen || l > op.maxLen {
 		return false
 	}

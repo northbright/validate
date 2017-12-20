@@ -4,11 +4,11 @@ import (
 	"regexp"
 )
 
-// ValidMobilePhoneNum validates the mobile phone number(China).
+// ValidMobilePhoneNumInChina validates the mobile phone number in China.
 //
 // Return:
 //     true for valid or false for invalid.
-func ValidMobilePhoneNum(number string) bool {
+func ValidMobilePhoneNumInChina(number string) bool {
 	p := `^\d{11}$`
 	r := regexp.MustCompile(p)
 

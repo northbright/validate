@@ -1,7 +1,6 @@
 package validate
 
 import (
-	"fmt"
 	"unicode"
 	"unicode/utf8"
 )
@@ -20,22 +19,6 @@ type passwordOptions struct {
 	oneLower   bool
 	oneSpecial bool
 }
-
-var (
-	// ErrPasswordInvalidUTF8Rune is the reason of invalid UTF-8 rune.
-	ErrPasswordInvalidUTF8Rune = fmt.Errorf("password consists of invalid UTF-8 rune")
-	// ErrPasswordLen is the reason of invalid length.
-	ErrPasswordLen = fmt.Errorf("invalid password length")
-	// ErrPasswordOneNum is the reason of not having at least one number.
-	ErrPasswordOneNum = fmt.Errorf("password should have at least one number")
-	// ErrPasswordOneUpper is the reason of not having at least one upper-case letter.
-	ErrPasswordOneUpper = fmt.Errorf("password should have at least one uppler-case letter")
-	// ErrPasswordOneLower is the reason of not having at least one lower-case letter.
-	ErrPasswordOneLower = fmt.Errorf("password should have at least one lower-case letter")
-	// ErrPasswordOneSpecial is the reason of not having at least one special character.
-	// One special letter may be one symbol or one punctuation.
-	ErrPasswordOneSpecial = fmt.Errorf("password should have at least one special character")
-)
 
 // PasswordMinLen specifies the min length of password.
 func PasswordMinLen(l int) PasswordOption {
@@ -91,18 +74,7 @@ func PasswordOneSpecial(flag bool) PasswordOption {
 //              PasswordOneUpper(): at least one upper case letter. Default: false.
 //              PasswordOneLower(): at least one lower case letter. Default: false.
 //              PasswordOneSpecial(): at least one special letter(one symbol or one punctuation).
-// Return:
-//     valid: true, nil
-//     invalid: false, error with message.
-//     The error may be one of the following:
-//         nil: valid
-//         ErrPasswordInvalidUTF8Rune
-//         ErrPasswordLen
-//         ErrPasswordOneNum
-//         ErrPasswordOneUpper
-//         ErrPasswordOneLower
-//         ErrPasswordOneSpecial
-func ValidPassword(password string, options ...PasswordOption) (bool, error) {
+func ValidPassword(password string, options ...PasswordOption) bool {
 	var (
 		oneNum     = false
 		oneUpper   = false
@@ -125,13 +97,13 @@ func ValidPassword(password string, options ...PasswordOption) (bool, error) {
 
 	// Whether password consists entirely of valid UTF-8-encoded runes.
 	if !utf8.ValidString(password) {
-		return false, ErrPasswordInvalidUTF8Rune
+		return false
 	}
 
 	// Validate Password Length.
 	len := utf8.RuneCountInString(password)
 	if len < op.minLen || len > op.maxLen {
-		return false, ErrPasswordLen
+		return false
 	}
 
 	for _, r := range password {
@@ -148,20 +120,20 @@ func ValidPassword(password string, options ...PasswordOption) (bool, error) {
 	}
 
 	if op.oneNum && !oneNum {
-		return false, ErrPasswordOneNum
+		return false
 	}
 
 	if op.oneUpper && !oneUpper {
-		return false, ErrPasswordOneUpper
+		return false
 	}
 
 	if op.oneLower && !oneLower {
-		return false, ErrPasswordOneLower
+		return false
 	}
 
 	if op.oneSpecial && !oneSpecial {
-		return false, ErrPasswordOneSpecial
+		return false
 	}
 
-	return true, nil
+	return true
 }
