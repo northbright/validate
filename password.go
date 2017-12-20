@@ -67,7 +67,7 @@ func PasswordOneSpecial(flag bool) PasswordOption {
 //
 // Params:
 //     password: password string to validate.
-//     options: users can specifiy options by following functions:
+//     options: users can specify options by following functions:
 //              PasswordMinLen(): min len. Default: 8.
 //              PasswordMaxLen(): max len. Default: 64.
 //              PasswordOneNum(): at least one number. Default: false.
