@@ -60,7 +60,7 @@ func UsernameNoUnderscore(flag bool) UsernameOption {
 //
 // Params:
 //     username: username to validate.
-//     options: users can specifiy options by following functions:
+//     options: users can specify options by following functions:
 //              UsernameMinLen(): min length of username. Default: 6.
 //                  The length of username is the number of bytes in the string(UTF-8 encoded).
 //                  e.g. len("世界") = 6, len("world") = 5.
