@@ -41,21 +41,21 @@ func PasswordOneNum(flag bool) PasswordOption {
 	}}
 }
 
-// PasswordOneNum specifies if password must have at least one upper case letter.
+// PasswordOneUpper specifies if password must have at least one upper case letter.
 func PasswordOneUpper(flag bool) PasswordOption {
 	return PasswordOption{func(op *passwordOptions) {
 		op.oneUpper = flag
 	}}
 }
 
-// PasswordOneNum specifies if password must have at least one lower case letter.
+// PasswordOneLower specifies if password must have at least one lower case letter.
 func PasswordOneLower(flag bool) PasswordOption {
 	return PasswordOption{func(op *passwordOptions) {
 		op.oneLower = flag
 	}}
 }
 
-// PasswordOneNum specifies if password must have at least one special letter.
+// PasswordOneSpecial specifies if password must have at least one special letter.
 // One special letter may be one symbol or one punctuation.
 func PasswordOneSpecial(flag bool) PasswordOption {
 	return PasswordOption{func(op *passwordOptions) {
