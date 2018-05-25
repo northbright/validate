@@ -1,8 +1,8 @@
 package validate
 
 import (
-	"unicode"
-	"unicode/utf8"
+	"fmt"
+	"regexp"
 )
 
 // PasswordOption specifies an option for password validation.
@@ -73,19 +73,12 @@ func PasswordOneSpecial(flag bool) PasswordOption {
 //              PasswordOneNum(): at least one number. Default: false.
 //              PasswordOneUpper(): at least one upper case letter. Default: false.
 //              PasswordOneLower(): at least one lower case letter. Default: false.
-//              PasswordOneSpecial(): at least one special letter(one symbol or one punctuation).
+//              PasswordOneSpecial(): at least one symbol or punctuation. Default: false.
 func ValidPassword(password string, options ...PasswordOption) bool {
-	var (
-		oneNum     = false
-		oneUpper   = false
-		oneLower   = false
-		oneSpecial = false
-	)
+	var patterns []string
 
 	// Initialize default password options.
 	op := passwordOptions{
-		// minLen represents the min length of password.
-		// The length is rune count of UTF-8 string. Ex: rune count of "Hello, 世界" is 9.
 		minLen: 8,
 		maxLen: 64,
 	}
@@ -95,44 +88,33 @@ func ValidPassword(password string, options ...PasswordOption) bool {
 		option.f(&op)
 	}
 
-	// Whether password consists entirely of valid UTF-8-encoded runes.
-	if !utf8.ValidString(password) {
-		return false
+	p := fmt.Sprintf(`^(\d|[a-z]|[A-Z]|\W){%v,%v}$`, op.minLen, op.maxLen)
+	patterns = append(patterns, p)
+
+	// Because that Golang's regexp package does NOT support `(?=re)`:
+	// Zero-width positive lookahead assertion,
+	// Use 4 patterns to valid the password.
+	if op.oneNum {
+		patterns = append(patterns, `^.*\d`)
 	}
 
-	// Validate Password Length.
-	len := utf8.RuneCountInString(password)
-	if len < op.minLen || len > op.maxLen {
-		return false
+	if op.oneLower {
+		patterns = append(patterns, `^.*[a-z]`)
 	}
 
-	for _, r := range password {
-		switch {
-		case unicode.IsDigit(r):
-			oneNum = true
-		case unicode.IsUpper(r):
-			oneUpper = true
-		case unicode.IsLower(r):
-			oneLower = true
-		case unicode.IsSymbol(r), unicode.IsPunct(r):
-			oneSpecial = true
+	if op.oneUpper {
+		patterns = append(patterns, `^.*[A-Z]`)
+	}
+
+	if op.oneSpecial {
+		patterns = append(patterns, `^.*\W`)
+	}
+
+	for _, pattern := range patterns {
+		re := regexp.MustCompile(pattern)
+		if !re.MatchString(password) {
+			return false
 		}
-	}
-
-	if op.oneNum && !oneNum {
-		return false
-	}
-
-	if op.oneUpper && !oneUpper {
-		return false
-	}
-
-	if op.oneLower && !oneLower {
-		return false
-	}
-
-	if op.oneSpecial && !oneSpecial {
-		return false
 	}
 
 	return true

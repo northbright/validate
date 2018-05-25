@@ -17,7 +17,7 @@ func ExampleValidPassword() {
 		"#ABCD1234",
 		"@5431efgh",
 		"Copy&Paste中文密码123",
-		"Copy&Paste日本のパスワード123",
+		"CopyPaste日本のパスワード123",
 	}
 
 	// Default Password Validation Configuration.
