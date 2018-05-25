@@ -4,6 +4,7 @@ import (
 	"regexp"
 )
 
+// ValidIDCardNo validate the ID card of the People's Republic of China.
 func ValidIDCardNo(IDCardNo string) bool {
 	patterns := []string{
 		// 15-digit China ID Card Number
