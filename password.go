@@ -67,6 +67,7 @@ func PasswordOneSpecial(flag bool) PasswordOption {
 //
 // Params:
 //     password: password string to validate.
+//               Password consists of numbers, letters(lower or upper) and all chars other than numbers, letters and "_".
 //     options: users can specify options by following functions:
 //              PasswordMinLen(): min len. Default: 8.
 //              PasswordMaxLen(): max len. Default: 64.
@@ -88,6 +89,7 @@ func ValidPassword(password string, options ...PasswordOption) bool {
 		option.f(&op)
 	}
 
+	// Password consists of numbers, letters(lower or upper) and all chars other than numbers, letters and "_".
 	p := fmt.Sprintf(`^(\d|[a-z]|[A-Z]|\W){%v,%v}$`, op.minLen, op.maxLen)
 	patterns = append(patterns, p)
 
